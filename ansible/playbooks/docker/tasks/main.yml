@@ -8,12 +8,15 @@
     mode: "0755"
 
 - name: execute the docker installation script
-  ansible.builtin.command: /tmp/get-docker.sh
+  ansible.builtin.shell: 
+    cmd: /tmp/get-docker.sh && touch /var/log/script_done.lock
+    creates: /var/log/script_done.lock
 
-- name: Do task if running inside a container
-  ansible.builtin.shell:
-    cmd: dockerd &>/dev/null &
-  when: ansible_facts["virtualization_type"] in ["docker", "podman", "containerd", "lxc"]
+- name: start and enable docker service
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
 
 - name: test docker
   ansible.builtin.shell:
