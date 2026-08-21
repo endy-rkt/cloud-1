@@ -1,7 +1,7 @@
 FROM alpine:3.24
 
 RUN apk update \
-    && apk add --no-cache openssh
+    && apk add --no-cache openssh python3
 
 RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
     && echo "root:password" | chpasswd
