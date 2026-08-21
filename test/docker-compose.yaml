@@ -1,0 +1,19 @@
+services:
+  debian:
+    build:
+      context: .
+      dockerfile: debian/Dockerfile
+    image: debian:ssh-1
+    container_name: debian-ssh
+    ports: 
+      - 2222:22
+  
+  alpine:
+    build:
+      context: .
+      dockerfile: alpine/Dockerfile
+    image: alpine:ssh-1
+    container_name: alpine-ssh
+    ports: 
+      - 2223:22
+    
