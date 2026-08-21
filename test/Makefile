@@ -9,4 +9,7 @@ down:
 stop:
 	docker compose stop
 
+fclean:
+	docker rmi  $$(docker images -q)
+
 .PHONY: all up down stop

@@ -5,7 +5,8 @@ RUN apt update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN echo "root:password" | chpasswd
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
+    && echo "root:password" | chpasswd
 
 RUN mkdir -p /run/sshd
 

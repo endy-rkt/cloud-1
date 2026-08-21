@@ -6,7 +6,8 @@ services:
     image: debian:ssh-1
     container_name: debian-ssh
     ports: 
-      - 2222:22
+      - 2231:22
+    restart: unless-stopped
   
   alpine:
     build:
@@ -15,5 +16,6 @@ services:
     image: alpine:ssh-1
     container_name: alpine-ssh
     ports: 
-      - 2223:22
+      - 2230:22
+    restart: unless-stopped
     
