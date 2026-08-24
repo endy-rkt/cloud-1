@@ -1,0 +1,18 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: download docker installation script
+  ansible.builtin.get_url:
+    url: https://get.docker.com/
+    dest: /tmp/get-docker.sh
+    mode: "0755"
+
+- name: execute the docker installation script
+  ansible.builtin.shell: 
+    cmd: /tmp/get-docker.sh 
+    creates: /usr/bin/docker
+
+- name: start and enable docker service
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes

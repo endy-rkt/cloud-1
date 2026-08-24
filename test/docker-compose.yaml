@@ -1,0 +1,23 @@
+services:
+  debian:
+    privileged: true
+    build:
+      context: .
+      dockerfile: debian/Dockerfile
+    image: debian:ssh-1
+    container_name: debian-ssh
+    ports: 
+      - 2231:22
+    restart: unless-stopped
+  
+  ubuntu:
+    privileged: true
+    build:
+      context: .
+      dockerfile: ubuntu/Dockerfile
+    image: ubuntu:ssh-1
+    container_name: ubuntu-ssh
+    ports: 
+      - 2230:22
+    restart: unless-stopped
+    

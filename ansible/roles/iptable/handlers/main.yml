@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for iptable
+- name: save iptables rules
+  ansible.builtin.shell:
+    cmd: iptables-save > /etc/iptables/rules.v4
+  
