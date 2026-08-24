@@ -1,0 +1,38 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for iptable
+- name: install iptable
+  ansible.builtin.package:
+    name: iptables
+    state: present
+
+- name: install iptables-persistent
+  ansible.builtin.package:
+    name: iptables-persistent
+    state: present
+
+- name: start and enable iptables service
+  ansible.builtin.service:
+    name: iptables
+    state: started
+    enabled: yes
+
+- name: allow on autorized ports
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_ports:
+      - "22"
+      - "80"
+      - "443"
+    rule_num: 1
+    action: ACCEPT
+    jump: ACCEPT
+  notify: save iptables rules
+
+- name: drop all non autorized connextion
+  ansible.builtin.iptables:
+    chain: INPUT
+    rule_num: 2
+    jump: DROP
+  notify: save iptables rules

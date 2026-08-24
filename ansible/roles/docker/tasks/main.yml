@@ -1,6 +1,5 @@
 #SPDX-License-Identifier: MIT-0
 ---
-# tasks file for docker
 - name: download docker installation script
   ansible.builtin.get_url:
     url: https://get.docker.com/
@@ -9,15 +8,11 @@
 
 - name: execute the docker installation script
   ansible.builtin.shell: 
-    cmd: /tmp/get-docker.sh && touch /var/log/script_done.lock
-    creates: /var/log/script_done.lock
+    cmd: /tmp/get-docker.sh 
+    creates: /usr/bin/docker
 
 - name: start and enable docker service
   ansible.builtin.service:
     name: docker
     state: started
     enabled: yes
-
-- name: test docker
-  ansible.builtin.shell:
-    cmd: docker ps

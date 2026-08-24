@@ -10,4 +10,11 @@ install_ansible(){
     fi
 }
 
+install_ansible_collection(){
+    if ansible --version &> /dev/null; then
+        ansible-galaxy collection install community.docker
+    fi
+}
+
 install_ansible
+install_ansible_collection
