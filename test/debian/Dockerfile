@@ -1,7 +1,7 @@
 FROM debian:12-slim
 
 RUN apt update \
-    && apt install -y openssh-server \
+    && apt install -y openssh-server python3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
