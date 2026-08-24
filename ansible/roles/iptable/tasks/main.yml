@@ -17,6 +17,20 @@
     state: started
     enabled: yes
 
+- name: Allow local loopback traffic
+  ansible.builtin.iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+    rule_num: 1
+
+- name: Allow related and established connections
+  ansible.builtin.iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+    rule_num: 2
+
 - name: allow on autorized ports
   ansible.builtin.iptables:
     chain: INPUT
@@ -25,14 +39,13 @@
       - "22"
       - "80"
       - "443"
-    rule_num: 1
-    action: ACCEPT
+    rule_num: 3
     jump: ACCEPT
   notify: save iptables rules
 
 - name: drop all non autorized connextion
   ansible.builtin.iptables:
     chain: INPUT
-    rule_num: 2
+    rule_num: 4
     jump: DROP
   notify: save iptables rules
