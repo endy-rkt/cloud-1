@@ -1,11 +1,16 @@
 #!/bin/bash
 
 #test on debian like os
+#to run with source
 
 install_ansible(){
     if ! command -v ansible &> /dev/null; then
+        echo "Creating a virtual env for python3"
+        python3 -m venv .venv
+        source .venv/bin/activate
+
         echo "Installing ansible..."
-        python3 -m pip install --break-system-packages --quiet ansible
+        pip install ansible
         ansible --version
     fi
 }
