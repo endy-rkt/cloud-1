@@ -2,15 +2,9 @@
 set -e
 
 WP_PATH="/var/www/html"
-
-WP_ADMIN="trazanad"
-WP_ADMIN_PASSWORD="trazanadpass"
-WP_ADMIN_EMAIL="trazanad@42.com"
-
-WP_USER="dude"
-WP_USER_PASSWORD="dudepass"
-WP_USER_EMAIL="dude@42.fr"
-
+WP_USER_PASSWORD=$(cat /run/secrets/wp_user_pass)
+WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_pass)
+WORDPRESS_DB_PASSWORD=$(cat $WORDPRESS_DB_PASSWORD_FILE)
 
 if [ ! -e "$WP_PATH/wp-settings.php" ]; then
     echo "copying wordpress core files from image..."
