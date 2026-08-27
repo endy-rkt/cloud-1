@@ -1,0 +1,25 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for common
+- name: install openssl
+  ansible.builtin.package:
+    name: openssl
+    state: present
+
+- name: add a deployer user
+  ansible.builtin.user:
+    name: deployer
+    shell: /bin/bash
+    groups: docker
+    append: yes
+
+- name: reset SSH connection to load docker group
+  ansible.builtin.meta: reset_connection
+
+- name: create app folder
+  ansible.builtin.file:
+    path: "/opt/app"
+    owner: deployer
+    group: deployer
+    state: directory
+    mode: "0755"

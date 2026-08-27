@@ -16,3 +16,8 @@
     name: docker
     state: started
     enabled: yes
+
+- name: Ensure docker group is created
+  ansible.builtin.group:
+    name: docker
+    state: present
