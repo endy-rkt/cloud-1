@@ -1,7 +1,10 @@
 #!/bin/sh
+
 set -e
 
+WP_TITLE="Demo site"
 WP_PATH="/var/www/html"
+WP_URL="http://{{ ansible_host }}"
 WP_USER_PASSWORD=$(cat /run/secrets/wp_user_pass)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_pass)
 WORDPRESS_DB_PASSWORD=$(cat $WORDPRESS_DB_PASSWORD_FILE)
@@ -25,8 +28,8 @@ fi
 if ! wp core is-installed --path="$WP_PATH" --allow-root; then
     echo "installing wordpress..."
     wp core install \
-        --url="http://localhost" \
-        --title="Demo site" \
+        --url="$WP_URL" \
+        --title="$WP_TITLE" \
         --admin_user="$WP_ADMIN" \
         --admin_password="$WP_ADMIN_PASSWORD" \
         --admin_email="$WP_ADMIN_EMAIL" \

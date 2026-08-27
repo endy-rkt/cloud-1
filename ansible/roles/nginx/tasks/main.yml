@@ -21,11 +21,19 @@
     group: deployer
     mode: "0755"
 
-# - name: build nginx image
-#   community.docker.docker_image_build:
-#     name: nginx
-#     tag: 1337-1.0
-#     path: /opt/app/nginx/
-#     outputs:
-#       - type: docker
-#         push: false  
+- name: deploy nginx configuration
+  ansible.builtin.template:
+    src: conf/1337.conf.j2
+    dest: /opt/app/nginx/conf/1337.conf
+    owner: deployer
+    group: deployer
+    mode: "0755"
+
+- name: build nginx image
+  community.docker.docker_image_build:
+    name: nginx
+    tag: 1337-1.0
+    path: /opt/app/nginx/
+    outputs:
+      - type: docker
+        push: false  

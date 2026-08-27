@@ -21,11 +21,12 @@
     owner: root
     group: root
     mode: "0644"
+  notify: restart docker service
 
 - name: start and enable docker service
   ansible.builtin.service:
     name: docker
-    state: restarted
+    state: started
     enabled: yes
 
 - name: Ensure docker group is created

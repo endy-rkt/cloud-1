@@ -5,11 +5,13 @@
   ansible.builtin.package:
     name: iptables
     state: present
+    update_cache: yes
 
 - name: install iptables-persistent
   ansible.builtin.package:
     name: iptables-persistent
     state: present
+    update_cache: yes
 
 - name: start and enable iptables service
   ansible.builtin.service:
