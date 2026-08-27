@@ -11,7 +11,7 @@
 
 - name: launch docker compose
   become: yes
-  become_user: deploy
+  become_user: deployer
   community.docker.docker_compose_v2:
     project_src: /opt/app/
     build: always

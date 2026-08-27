@@ -11,10 +11,21 @@
     cmd: /tmp/get-docker.sh 
     creates: /usr/bin/docker
 
+- name: Configure Docker daemon DNS
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "dns": ["8.8.8.8", "1.1.1.1"]
+      }
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: start and enable docker service
   ansible.builtin.service:
     name: docker
-    state: started
+    state: restarted
     enabled: yes
 
 - name: Ensure docker group is created

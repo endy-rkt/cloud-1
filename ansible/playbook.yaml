@@ -7,3 +7,8 @@
     - roles/docker
     - roles/iptable
     - roles/common
+    - roles/mysql
+    - roles/phpmyadmin
+    - roles/wordpress
+    - roles/nginx
+    - roles/deploy

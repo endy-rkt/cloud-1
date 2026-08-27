@@ -6,6 +6,18 @@
     name: openssl
     state: present
 
+- name: Install required Python libraries for Docker modules
+  ansible.builtin.package:
+    name: python3-requests
+    state: present
+    update_cache: yes
+
+- name: Install ACL package for Ansible unprivileged user switching
+  ansible.builtin.package:
+    name: acl
+    state: present
+    update_cache: yes
+
 - name: add a deployer user
   ansible.builtin.user:
     name: deployer
@@ -23,3 +35,10 @@
     group: deployer
     state: directory
     mode: "0755"
+
+- name: Prune old docker build caches to free space
+  community.docker.docker_prune:
+    builder_cache: yes
+    images: yes
+    images_filters:
+      dangling: false

@@ -22,10 +22,11 @@
     group: deployer
     mode: "0755"
 
-- name: build wordpress image
-  community.docker.docker_image_build:
-    name: wordpress
-    tag: 1337-1.0
-    path: /opt/app/wordpress/
-    exports:
-      - type: image
+# - name: build wordpress image
+#   community.docker.docker_image_build:
+#     name: wordpress
+#     tag: 1337-1.0
+#     path: /opt/app/wordpress/
+#     outputs:
+#       - type: docker
+#         push: false   
