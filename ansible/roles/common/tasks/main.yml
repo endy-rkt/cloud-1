@@ -7,15 +7,26 @@
     state: present
     update_cache: yes
 
-- name: Install required Python libraries for Docker modules
-  ansible.builtin.package:
-    name: python3-requests
-    state: present
-    update_cache: yes
-
 - name: Install ACL package for Ansible unprivileged user switching
   ansible.builtin.package:
     name: acl
+    state: present
+    update_cache: yes
+
+- name: Ensure pip3 is installed on target machine
+  ansible.builtin.package:
+    name: python3-pip
+    state: present
+    update_cache: yes
+
+- name: Install Docker SDK for Python on target machine
+  ansible.builtin.pip:
+    name: docker
+    executable: pip3
+  
+- name: Install required Python libraries for Docker modules
+  ansible.builtin.package:
+    name: python3-requests
     state: present
     update_cache: yes
 
@@ -37,9 +48,10 @@
     state: directory
     mode: "0755"
 
-# - name: Prune old docker build caches to free space
-#   community.docker.docker_prune:
-#     builder_cache: yes
-#     images: yes
-#     images_filters:
-#       dangling: false
+- name: Ensure remote_tmp exists with become_user access
+  ansible.builtin.file:
+    path: /home/deployer/.ansible/tmp
+    state: directory
+    mode: '0751'
+    owner: deployer
+    group: deployer

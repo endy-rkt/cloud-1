@@ -1,5 +1,13 @@
 #SPDX-License-Identifier: MIT-0
 ---
+- name: Ensure remote_tmp exists with correct permissions
+  ansible.builtin.file:
+    path: "/tmp/.ansible-root/tmp"
+    state: directory
+    mode: '0751'
+    owner: root
+    group: root
+    
 - name: download docker installation script
   ansible.builtin.get_url:
     url: https://get.docker.com/
