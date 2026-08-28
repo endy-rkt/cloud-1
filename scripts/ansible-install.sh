@@ -21,5 +21,10 @@ install_ansible_collection(){
     fi
 }
 
+#download tf for provisionning and use in goinfre
+download_terraform(){
+    wget https://releases.hashicorp.com/terraform/1.16.0/terraform_1.16.0_linux_amd64.zip
+}
+
 install_ansible
 install_ansible_collection
