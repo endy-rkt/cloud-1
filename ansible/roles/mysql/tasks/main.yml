@@ -13,11 +13,11 @@
     - /opt/app/mysql/data
     - /opt/app/mysql/secrets
 
-- name: Load Ansible Vault variables
+- name: load Ansible Vault variables
   ansible.builtin.include_vars:
     file: secrets.yaml
 
-- name: Write secret file from Vault variable(db_root_pass)
+- name: write secret file from Vault variable(db_root_pass)
   ansible.builtin.copy:
     content: "{{ db_root_pass }}"
     dest: "/opt/app/mysql/secrets/db_root_pass.txt"
@@ -26,7 +26,7 @@
     group: deployer
   no_log: true
 
-- name: Write secret file from Vault variable(db_user_pass)
+- name: write secret file from Vault variable(db_user_pass)
   ansible.builtin.copy:
     content: "{{ db_user_pass }}"
     dest: "/opt/app/mysql/secrets/db_user_pass.txt"

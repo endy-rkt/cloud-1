@@ -22,11 +22,11 @@
     group: deployer
     mode: "0755"
 
-- name: Load Ansible Vault variables
+- name: load Ansible Vault variables
   ansible.builtin.include_vars:
     file: secrets.yaml
 
-- name: Write secret file from Vault variable(wp_admin_pass)
+- name: write secret file from Vault variable(wp_admin_pass)
   ansible.builtin.copy:
     content: "{{ wp_admin_pass }}"
     dest: "/opt/app/wordpress/secrets/wp_admin_pass.txt"
@@ -34,8 +34,12 @@
     owner: deployer
     group: deployer
   no_log: true
+  notify:
+    - remove old wordpress image 
+    - trigger wordpress build
+    - trigger_compose_refresh
 
-- name: Write secret file from Vault variable(wp_user_pass)
+- name: write secret file from Vault variable(wp_user_pass)
   ansible.builtin.copy:
     content: "{{ wp_user_pass }}"
     dest: "/opt/app/wordpress/secrets/wp_user_pass.txt"
@@ -43,6 +47,10 @@
     owner: deployer
     group: deployer
   no_log: true
+  notify:
+    - remove old wordpress image 
+    - trigger wordpress build
+    - trigger_compose_refresh
 
 - name: deploy wordpress configuration
   ansible.builtin.template:
@@ -51,12 +59,7 @@
     owner: deployer
     group: deployer
     mode: "0755"
-
-- name: build wordpress image
-  community.docker.docker_image_build:
-    name: wordpress
-    tag: 1337-1.0
-    path: /opt/app/wordpress/
-    outputs:
-      - type: docker
-        push: false   
+  notify:
+    - remove old wordpress image 
+    - trigger wordpress build
+    - trigger_compose_refresh

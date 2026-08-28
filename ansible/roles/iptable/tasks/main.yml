@@ -19,14 +19,14 @@
     state: started
     enabled: yes
 
-- name: Allow local loopback traffic
+- name: allow local loopback traffic
   ansible.builtin.iptables:
     chain: INPUT
     in_interface: lo
     jump: ACCEPT
     rule_num: 1
 
-- name: Allow related and established connections
+- name: allow related and established connections
   ansible.builtin.iptables:
     chain: INPUT
     ctstate: ESTABLISHED,RELATED

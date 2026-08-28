@@ -20,6 +20,10 @@
     owner: deployer
     group: deployer
     mode: "0755"
+  notify:
+    - remove old Nginx image
+    - trigger Nginx build
+    - trigger_compose_refresh
 
 - name: deploy nginx configuration
   ansible.builtin.template:
@@ -28,12 +32,7 @@
     owner: deployer
     group: deployer
     mode: "0755"
-
-- name: build nginx image
-  community.docker.docker_image_build:
-    name: nginx
-    tag: 1337-1.0
-    path: /opt/app/nginx/
-    outputs:
-      - type: docker
-        push: false  
+  notify:
+    - remove old Nginx image
+    - trigger Nginx build
+    - trigger_compose_refresh

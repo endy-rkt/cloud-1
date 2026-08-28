@@ -1,3 +1,19 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # handlers file for nginx
+- name: remove old Nginx image
+  community.docker.docker_image:
+    name: nginx:1337-1.0
+    state: absent
+    force_absent: yes
+  failed_when: false
+
+- name: trigger Nginx build
+  community.docker.docker_image_build:
+    name: nginx
+    tag: 1337-1.0
+    path: /opt/app/nginx/
+    outputs:
+      - type: docker
+        push: false
+ 

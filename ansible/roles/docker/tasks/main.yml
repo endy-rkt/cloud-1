@@ -1,10 +1,10 @@
 #SPDX-License-Identifier: MIT-0
 ---
-- name: Ensure remote_tmp exists with correct permissions
+- name: ensure remote_tmp exists with correct permissions
   ansible.builtin.file:
     path: "/tmp/.ansible-root/tmp"
     state: directory
-    mode: '0751'
+    mode: '0700'
     owner: root
     group: root
     
@@ -19,7 +19,7 @@
     cmd: /tmp/get-docker.sh 
     creates: /usr/bin/docker
 
-- name: Configure Docker daemon DNS
+- name: configure Docker daemon DNS
   ansible.builtin.copy:
     dest: /etc/docker/daemon.json
     content: |
@@ -37,7 +37,7 @@
     state: started
     enabled: yes
 
-- name: Ensure docker group is created
+- name: ensure docker group is created
   ansible.builtin.group:
     name: docker
     state: present
