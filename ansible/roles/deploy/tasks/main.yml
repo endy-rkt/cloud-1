@@ -8,4 +8,12 @@
     owner: deployer
     group: deployer
     mode: "0755"
-    
+
+- name: ensure Docker Compose services are running
+  become: yes
+  become_user: deployer
+  community.docker.docker_compose_v2:
+    project_src: /opt/app/
+    build: always
+    state: present
+   
