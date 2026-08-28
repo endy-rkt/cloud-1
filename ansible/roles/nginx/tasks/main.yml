@@ -1,0 +1,60 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for nginx
+- name: create nginx volume and secrets folder
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: deployer
+    group: deployer
+    state: directory
+    mode: "0755"
+  loop:
+    - /opt/app/nginx
+    - /opt/app/nginx/conf
+    - /opt/app/nginx/conf/cert
+
+- name: copy nginx conf file
+  ansible.builtin.copy:
+    src: ./
+    dest: /opt/app/nginx/
+    owner: deployer
+    group: deployer
+    mode: "0755"
+  notify:
+    - remove old Nginx image
+    - trigger Nginx build
+    - trigger_compose_refresh
+
+- name: create certificate for nginx
+  ansible.builtin.shell: 
+    cmd: "openssl req -newkey rsa:2048 -nodes \
+        -keyout /opt/app/nginx/conf/cert/secret.key -x509 -days 365 \
+        -out /opt/app/nginx/conf/cert/secret.crt \
+        -subj '/C=MG/ST=Madagascar/L=Antananarivo/O=trazanad/OU=trazanad/CN=trazanad.42.fr'" 
+    creates: /opt/app/nginx/conf/cert/secret.key
+  notify:
+    - remove old Nginx image
+    - trigger Nginx build
+    - trigger_compose_refresh
+
+- name: update cert permissions and ownership
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: deployer
+    group: deployer
+    mode: "{{ item.mode }}"
+  loop:
+    - { path: "/opt/app/nginx/conf/cert/secret.key", mode: "0600" }
+    - { path: "/opt/app/nginx/conf/cert/secret.crt", mode: "0644" }
+
+- name: deploy nginx configuration
+  ansible.builtin.template:
+    src: conf/1337.conf.j2
+    dest: /opt/app/nginx/conf/1337.conf
+    owner: deployer
+    group: deployer
+    mode: "0755"
+  notify:
+    - remove old Nginx image
+    - trigger Nginx build
+    - trigger_compose_refresh

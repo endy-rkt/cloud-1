@@ -1,0 +1,19 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for phpmyadmin
+- name: create wordpress volume folder
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: deployer
+    group: deployer
+    state: directory
+    mode: "0755"
+  loop:
+    - /opt/app/phpmyadmin
+    - /opt/app/phpmyadmin/data
+
+- name: pull phpmyadmin image
+  community.docker.docker_image_pull:
+    name: phpmyadmin
+    tag: "5-fpm-alpine"
+    pull: not_present

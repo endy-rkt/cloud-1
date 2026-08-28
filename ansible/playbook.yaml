@@ -2,6 +2,13 @@
 - name: set up docker
   hosts: all
   become: yes
+  gather_facts: false
   roles:
     - roles/docker
     - roles/iptable
+    - roles/common
+    - roles/mysql
+    - roles/phpmyadmin
+    - roles/wordpress
+    - roles/nginx
+    - roles/deploy

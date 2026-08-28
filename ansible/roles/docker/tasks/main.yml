@@ -1,5 +1,13 @@
 #SPDX-License-Identifier: MIT-0
 ---
+- name: ensure remote_tmp exists with correct permissions
+  ansible.builtin.file:
+    path: "/tmp/.ansible-root/tmp"
+    state: directory
+    mode: '0700'
+    owner: root
+    group: root
+    
 - name: download docker installation script
   ansible.builtin.get_url:
     url: https://get.docker.com/
@@ -11,8 +19,25 @@
     cmd: /tmp/get-docker.sh 
     creates: /usr/bin/docker
 
+- name: configure Docker daemon DNS
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "dns": ["8.8.8.8", "1.1.1.1"]
+      }
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart docker service
+
 - name: start and enable docker service
   ansible.builtin.service:
     name: docker
     state: started
     enabled: yes
+
+- name: ensure docker group is created
+  ansible.builtin.group:
+    name: docker
+    state: present

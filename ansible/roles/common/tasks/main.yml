@@ -1,0 +1,57 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for common
+- name: install openssl
+  ansible.builtin.package:
+    name: openssl
+    state: present
+    update_cache: yes
+
+- name: install ACL package for Ansible unprivileged user switching
+  ansible.builtin.package:
+    name: acl
+    state: present
+    update_cache: yes
+
+- name: ensure pip3 is installed on target machine
+  ansible.builtin.package:
+    name: python3-pip
+    state: present
+    update_cache: yes
+
+- name: install Docker SDK for Python on target machine
+  ansible.builtin.pip:
+    name: docker
+    executable: pip3
+  
+- name: install required Python libraries for Docker modules
+  ansible.builtin.package:
+    name: python3-requests
+    state: present
+    update_cache: yes
+
+- name: add a deployer user
+  ansible.builtin.user:
+    name: deployer
+    shell: /bin/bash
+    groups: docker
+    append: yes
+
+- name: reset SSH connection to load docker group
+  ansible.builtin.meta: reset_connection
+
+- name: create app folder
+  ansible.builtin.file:
+    path: "/opt/app"
+    owner: deployer
+    group: deployer
+    state: directory
+    mode: "0755"
+
+- name: ensure remote_tmp exists with become_user access
+  ansible.builtin.file:
+    path: /home/deployer/.ansible/tmp
+    state: directory
+    mode: '0751'
+    owner: deployer
+    group: deployer

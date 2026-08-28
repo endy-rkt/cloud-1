@@ -1,1 +1,4 @@
 .venv
+.env
+app/.env
+ansible/roles/deploy/files/.env

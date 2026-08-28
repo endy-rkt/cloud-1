@@ -1,0 +1,42 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mysql
+- name: create mysql volume folder
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: deployer
+    group: deployer
+    state: directory
+    mode: "0755"
+  loop:
+    - /opt/app/mysql
+    - /opt/app/mysql/data
+    - /opt/app/mysql/secrets
+
+- name: load Ansible Vault variables
+  ansible.builtin.include_vars:
+    file: secrets.yaml
+
+- name: write secret file from Vault variable(db_root_pass)
+  ansible.builtin.copy:
+    content: "{{ db_root_pass }}"
+    dest: "/opt/app/mysql/secrets/db_root_pass.txt"
+    mode: "0400"
+    owner: deployer
+    group: deployer
+  no_log: true
+
+- name: write secret file from Vault variable(db_user_pass)
+  ansible.builtin.copy:
+    content: "{{ db_user_pass }}"
+    dest: "/opt/app/mysql/secrets/db_user_pass.txt"
+    mode: "0400"
+    owner: deployer
+    group: deployer
+  no_log: true
+
+- name: pull mysql image
+  community.docker.docker_image_pull:
+    name: mysql
+    tag: "9.7.2"
+    pull: not_present

@@ -1,0 +1,65 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for wordpress
+- name: create wordpress volume folder
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: deployer
+    group: deployer
+    state: directory
+    mode: "0755"
+  loop:
+    - /opt/app/wordpress
+    - /opt/app/wordpress/conf
+    - /opt/app/wordpress/data
+    - /opt/app/wordpress/secrets
+
+- name: copy wordpress conf file
+  ansible.builtin.copy:
+    src: ./
+    dest: /opt/app/wordpress/
+    owner: deployer
+    group: deployer
+    mode: "0755"
+
+- name: load Ansible Vault variables
+  ansible.builtin.include_vars:
+    file: secrets.yaml
+
+- name: write secret file from Vault variable(wp_admin_pass)
+  ansible.builtin.copy:
+    content: "{{ wp_admin_pass }}"
+    dest: "/opt/app/wordpress/secrets/wp_admin_pass.txt"
+    mode: "0400"
+    owner: deployer
+    group: deployer
+  no_log: true
+  notify:
+    - remove old wordpress image 
+    - trigger wordpress build
+    - trigger_compose_refresh
+
+- name: write secret file from Vault variable(wp_user_pass)
+  ansible.builtin.copy:
+    content: "{{ wp_user_pass }}"
+    dest: "/opt/app/wordpress/secrets/wp_user_pass.txt"
+    mode: "0400"
+    owner: deployer
+    group: deployer
+  no_log: true
+  notify:
+    - remove old wordpress image 
+    - trigger wordpress build
+    - trigger_compose_refresh
+
+- name: deploy wordpress configuration
+  ansible.builtin.template:
+    src: conf/entrypoint.sh.j2
+    dest: /opt/app/wordpress/conf/entrypoint.sh
+    owner: deployer
+    group: deployer
+    mode: "0755"
+  notify:
+    - remove old wordpress image 
+    - trigger wordpress build
+    - trigger_compose_refresh
