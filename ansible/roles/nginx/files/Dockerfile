@@ -1,8 +1,11 @@
 FROM nginx:1-alpine3.24
 
-RUN apk update \
-    && apk add --no-cache openssl \
-    && rm /var/cache/apk/*   
+RUN apk update && \
+    for i in {1..10}; do \
+        apk add --no-cache openssl && break || \
+        (echo "Retry $i failed, waiting..." && sleep 3); \
+    done && \
+    rm -rf /var/cache/apk/*
 
 RUN mkdir -p /etc/nginx/cert \
     && mkdir -p /var/www/html \
