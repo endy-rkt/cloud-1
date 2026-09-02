@@ -1,0 +1,31 @@
+#vpc
+output "vpc_id" {
+  description = "vpc_id"
+  value = aws_vpc.vpc_example.id
+}
+
+output "vpc_cidr_block" {
+  description = "vpc_cidr_block"
+  value = aws_vpc.vpc_example.cidr_block
+}
+
+output "vpc_tags" {
+  description = "vpc_tag_name"
+  value = aws_vpc.vpc_example.tags
+}
+
+#subnet
+output "subnet_id" {
+  description = "subnet_id"
+  value = aws_subnet.subnet_example.id
+}
+
+output "subnet_cidr_block" {
+    description = "subnet_cidr_block"
+    value = aws_subnet.subnet_example.cidr_block
+}
+
+output "subnet_tags" {
+  description = "subnet_tags"
+  value = aws_subnet.subnet_example.tags
+}
