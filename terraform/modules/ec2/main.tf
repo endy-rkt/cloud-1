@@ -1,4 +1,9 @@
-resource "aws_instance" "ec2_example" {
+resource "aws_key_pair" "key_pair_example" {
+  key_name = var.ec2_key_name
+  public_key = var.ec2_public_key
+}
+
+resource "aws_instance" "ec2_server" {
   ami = var.ec2_ami
   instance_type = var.ec2_instance_type
   key_name = var.ec2_key_name

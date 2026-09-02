@@ -12,7 +12,7 @@ variable "ec2_ami" {
 
 variable "ec2_key_name" {
   type = string
-  description = "Key name of the Key Pair to use for the instance"
+  description = "Key name of the Key Pair to use for the instance like local machine to instance"
 }
 
 variable "ec2_subnet_id" {
@@ -64,4 +64,16 @@ variable "ec2_root_block_delete_on_termination" {
   type = bool
   description = "ec2_root_block_delete_on_termination"
   default = true
+}
+
+#key pair
+variable "ec2_key_name" {
+  type = string
+  description = "key name for the key pair used in ec2"
+  default = "deployer-key"
+}
+
+variable "ec2_public_key" {
+  type = string
+  description = "public key for the key pair used in ec2"
 }

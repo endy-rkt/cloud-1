@@ -1,17 +1,17 @@
 #vpc
 output "vpc_id" {
   description = "vpc_id"
-  value = aws_vpc.vpc_example.id
+  value = aws_vpc.vpc_default.id
 }
 
 output "vpc_cidr_block" {
   description = "vpc_cidr_block"
-  value = aws_vpc.vpc_example.cidr_block
+  value = aws_vpc.vpc_default.cidr_block
 }
 
 output "vpc_tags" {
   description = "vpc_tag_name"
-  value = aws_vpc.vpc_example.tags
+  value = aws_vpc.vpc_default.tags
 }
 
 #subnet

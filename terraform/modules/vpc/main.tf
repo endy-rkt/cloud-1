@@ -1,4 +1,4 @@
-resource "aws_vpc" "vpc_example" {
+resource "aws_vpc" "vpc_default" {
   cidr_block = var.vpc_cidr_block
 
   tags = {
@@ -7,15 +7,15 @@ resource "aws_vpc" "vpc_example" {
 }
 
 resource "aws_internet_gateway" "gw_example" {
-  vpc_id = aws_vpc.vpc_example.id
-  
+  vpc_id = aws_vpc.vpc_default.id
+
   tags = {
     Name = var.gw_tag_name
   }
 }
 
 resource "aws_route_table" "route_table_example" {
-  vpc_id = aws_vpc.vpc_example.id
+  vpc_id = aws_vpc.vpc_default.id
 
   route {
     cidr_block = var.route_table_incoming_cidr_block
