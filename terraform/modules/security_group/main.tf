@@ -2,6 +2,7 @@ resource "aws_security_group" "sg_example" {
   name = var.sg_name
   description = "Allow TLS inbound traffic and all outbound traffic"
   vpc_id = var.sg_vpc_id
+  
   tags = {
     Name = var.sg_tag_name
   }

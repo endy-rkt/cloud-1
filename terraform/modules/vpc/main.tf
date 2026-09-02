@@ -1,7 +1,29 @@
 resource "aws_vpc" "vpc_example" {
   cidr_block = var.vpc_cidr_block
+
   tags = {
     Name = var.vpc_name
+  }
+}
+
+resource "aws_internet_gateway" "gw_example" {
+  vpc_id = aws_vpc.vpc_example.id
+  
+  tags = {
+    Name = var.gw_tag_name
+  }
+}
+
+resource "aws_route_table" "route_table_example" {
+  vpc_id = aws_vpc.vpc_example.id
+
+  route {
+    cidr_block = var.route_table_incoming_cidr_block
+    gateway_id = aws_internet_gateway.gw_example.id
+  }
+  
+  tags = {
+    Name = var.route_table_name
   }
 }
 
@@ -14,5 +36,3 @@ resource "aws_subnet" "subnet_example" {
     Name = var.subnet_name
   }
 }
-
-#internet gateway to add

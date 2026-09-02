@@ -29,3 +29,15 @@ output "subnet_tags" {
   description = "subnet_tags"
   value = aws_subnet.subnet_example.tags
 }
+
+#gw
+output "gw_id" {
+  description = "gw_id"
+  value = aws_internet_gateway.gw_example.id
+}
+
+#route
+output "route_table_id" {
+  description = "route_table_id"
+  value = aws_route_table.route_table_example.id
+}

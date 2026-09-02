@@ -34,3 +34,23 @@ variable "subnet_name" {
   description = "subnet_name"
   default = "main_sub"
 }
+
+#gw
+variable "gw_tag_name" {
+  type = string
+  description = "gw_tag_name"
+  default = "main_gw"
+}
+
+#route table
+variable "route_table_name" {
+  type = string
+  description = "route_table_name"
+  default = "main_route_table"
+}
+
+variable "route_table_incoming_cidr_block" {
+  type = string
+  description = "route_table_incoming_cidr_block"
+  default = "0.0.0.0/0"
+}
