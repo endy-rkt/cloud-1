@@ -10,11 +10,6 @@ variable "ec2_ami" {
   default = "ami-0c7217cdde317cfec" #Ubuntu 22.04 LTS (Jammy), AMD64/x86_64, us-east-1
 }
 
-variable "ec2_key_name" {
-  type = string
-  description = "Key name of the Key Pair to use for the instance like local machine to instance"
-}
-
 variable "ec2_subnet_id" {
   type = string
   description = "subnet id used in ec2"

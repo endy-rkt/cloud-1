@@ -13,3 +13,8 @@ variable "aws_role_arn" {
   type = string
   description = "aws arn role"
 }
+
+variable "aws_default_pub_key" {
+  type = string
+  description = "default key to allow ec2 to host comm"
+}
