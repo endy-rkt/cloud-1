@@ -1,3 +1,4 @@
+#need to add profile and role
 terraform {
     required_version = "~> 1.15.0"
     required_providers {

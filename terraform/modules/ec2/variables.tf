@@ -59,3 +59,9 @@ variable "ec2_root_block_iops" {
   description = "ec2_root_block_iops"
   default = 3000
 }
+
+variable "ec2_root_block_delete_on_termination" {
+  type = bool
+  description = "ec2_root_block_delete_on_termination"
+  default = true
+}
