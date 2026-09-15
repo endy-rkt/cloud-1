@@ -1,0 +1,15 @@
+- name: Copy Dockerfile
+  ansible.builtin.copy:
+    src: Dockerfile
+    dest: /opt/app/nginx/
+
+- name: Copy config file
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /opt/app/nginx/conf/nginx.conf
+
+- name: Pull nginx
+  community.docker.docker_image_pull:
+    name: nginx
+    tag: "1-bookworm"
+    pull: not_present

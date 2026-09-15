@@ -1,0 +1,24 @@
+- name: Creating wp tools directory 
+  ansible.builtin.file:
+    path: /opt/app/wp/tools/
+    state: directory
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+
+- name: Copy configuration scripts
+  ansible.builtin.template:
+    src: wp-auto-config.sh.j2
+    dest: /opt/app/wp/tools/wp-auto-config.sh
+
+- name: Copy Dockerfile
+  ansible.builtin.copy:
+    src: Dockerfile
+    dest : /opt/app/wp/
+  
+
+
+- name: Pull wordpress image
+  community.docker.docker_image_pull:
+    name: wordpress
+    tag: "php8.3-fpm"
+    pull: not_present

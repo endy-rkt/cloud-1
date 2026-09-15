@@ -1,0 +1,48 @@
+#!/bin/bash
+set -e
+
+sleep 10
+
+mkdir  -p /var/www/html
+cd /var/www/html
+
+sql_pwd="$(cat /run/secrets/mysql_password)"
+wp_admin_pass="$(cat /run/secrets/wp_admin_password)"
+wp_user2_pwd="$(cat /run/secrets/wp_user2_password)"
+
+if [ ! -f wp-config.php ]; then
+    wp core download --allow-root
+
+    wp config create \
+        --dbname="$sql_database" \
+        --dbuser="$sql_user" \
+        --dbpass="$sql_pwd" \
+        --dbhost="mariadb:3306" \
+        --path="/var/www/html" \
+        --allow-root
+
+    wp core install \
+        --url="{{ansible_host}}" \
+        --title="inception" \
+        --admin_user="$wp_admin_user" \
+        --admin_password="$wp_admin_pass" \
+        --admin_email="$wp_admin_email" \
+        --skip-email \
+        --path="/var/www/html" \
+        --allow-root
+
+    wp user create \
+        "$wp_user2" \
+        "$wp_user2_mail" \
+        --user_pass="$wp_user2_pwd" \
+        --role=editor \
+        --allow-root
+
+    echo "WordPress Configuration Done"
+else
+    echo "WordPress already configured"
+fi
+
+chmod 777 -R /var/www/html/wp-content/
+
+exec /usr/local/sbin/php-fpm -F

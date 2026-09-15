@@ -1,0 +1,125 @@
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    env_file: .env
+    ports:
+      - "443:443"
+    restart: always
+
+  wordpress:
+    container_name: wordpress
+    build:
+      context: ./wp
+      dockerfile: Dockerfile
+    secrets:
+      - mysql_password
+      - wp_admin_password
+      - wp_user2_password
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: ${sql_database}
+      WORDPRESS_DB_USER: ${sql_user}
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_password
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    env_file: .env
+    restart: always
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:5
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+    env_file: .env
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+    restart: always
+
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:12
+    build:
+      context: requirements/mariadb
+      dockerfile: Dockerfile
+    secrets:
+      - mysql_password
+      - mysql_root_password
+
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception
+    env_file: .env
+    restart: always
+
+   duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - SUBDOMAINS=${duckdns_subdomain}
+      - LOG_FILE=false
+    
+    secrets:
+      - duckdns_token
+
+    restart: unless-stopped
+
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/app/data/WordPress
+
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/app/data/MariaDB
+
+
+networks:
+  inception:
+    driver: bridge
+
+secrets:
+  mysql_password:
+    file: ./secrets/mysql_password.txt
+
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+
+  wp_admin_password:
+    file: ./secrets/wp_admin_password.txt
+
+  wp_user2_password:
+    file: ./secrets/wp_user2_password.txt

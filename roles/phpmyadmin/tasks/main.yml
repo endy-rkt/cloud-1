@@ -1,0 +1,5 @@
+- name: Pull phpmyadmin image
+  community.docker.docker_image_pull:
+    name: phpmyadmin
+    tag: "5"
+    pull: not_present
