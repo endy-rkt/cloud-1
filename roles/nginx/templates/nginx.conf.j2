@@ -1,0 +1,71 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name {{ ansible_host }} localhost;
+
+    root /var/www/html;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass wordpress:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_index index.php;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name {{ ansible_host }};
+
+    root /var/www/html;
+    index index.php;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_certificate /etc/nginx/cert/secret.crt;
+    ssl_certificate_key /etc/nginx/cert/secret.key;
+    ssl_prefer_server_ciphers on;
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    # phpMyAdmin PHP handling (FPM 9000)
+    location ~ ^/pma(?<pma_script>.*\.php)$ {
+        fastcgi_pass phpmyadmin:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME /var/www/html$pma_script;
+        fastcgi_param HTTPS on;
+    }
+
+    # phpMyAdmin static files — no ^~
+    location /pma {
+        alias /var/www/admin/;
+        index index.php index.html;
+        try_files $uri $uri/ =404;
+    }
+
+    # WordPress PHP handling (FPM 9000)
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass wordpress:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_index index.php;
+        fastcgi_param HTTPS on;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}

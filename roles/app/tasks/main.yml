@@ -1,0 +1,13 @@
+- name: Create folder structure
+  ansible.builtin.file:
+    path: "{{item}}"
+    owner: root
+    group: root
+    state: directory
+  loop:
+    - /opt/app/data/MariaDB
+    - /opt/app/data/WordPress
+    - /opt/app/nginx
+    - /opt/app/nginx/conf
+    - /opt/app/
+    - /opt/app/wp

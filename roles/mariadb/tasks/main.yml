@@ -1,0 +1,5 @@
+- name: Pull mariadb image
+  community.docker.docker_image_pull:
+    name: mariadb
+    tag: "12"
+    pull: not_present
