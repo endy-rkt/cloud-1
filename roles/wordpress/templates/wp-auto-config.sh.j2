@@ -22,7 +22,7 @@ if [ ! -f wp-config.php ]; then
         --allow-root
 
     wp core install \
-        --url="{{ansible_host}}" \
+        --url="$DOMAIN_NAME" \
         --title="inception" \
         --admin_user="$wp_admin_user" \
         --admin_password="$wp_admin_pass" \

@@ -75,7 +75,7 @@ services:
     env_file: .env
     restart: always
 
-   duckdns:
+  duckdns:
     image: lscr.io/linuxserver/duckdns:latest
     container_name: duckdns
 
@@ -85,7 +85,7 @@ services:
       - TZ=Etc/UTC
       - SUBDOMAINS=${duckdns_subdomain}
       - LOG_FILE=false
-    
+      - TOKEN_FILE=/run/secrets/duckdns_token
     secrets:
       - duckdns_token
 
@@ -123,3 +123,6 @@ secrets:
 
   wp_user2_password:
     file: ./secrets/wp_user2_password.txt
+
+  duckdns_token:
+    file: ./secrets/duckdns_token.txt
