@@ -76,16 +76,19 @@ services:
     restart: always
 
   duckdns:
-    image: lscr.io/linuxserver/duckdns:latest
+    build:
+      context: duckdns
+      dockerfile: Dockerfile
+
     container_name: duckdns
 
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - SUBDOMAINS=${duckdns_subdomain}
+      - SUBDOMAINS=penaltymerchant
       - LOG_FILE=false
-      - TOKEN_FILE=/run/secrets/duckdns_token
+
     secrets:
       - duckdns_token
 

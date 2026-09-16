@@ -6,12 +6,13 @@
     - group_vars/vault.yml
 
   roles:
-    - init
-    - docker
-    - firewall
-    - app
-    - mariadb
-    - wordpress
-    - phpmyadmin
-    - nginx
+    #- init
+    #- docker
+    #- firewall
+    #- app
+    #- mariadb
+    #- wordpress
+    - duckdns
+    #- phpmyadmin
+    #- nginx
     - services

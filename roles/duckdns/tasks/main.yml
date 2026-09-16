@@ -1,0 +1,14 @@
+- name: Create Duckdns directory
+  ansible.builtin.file:
+    path: /opt/app/duckdns
+
+
+- name: Copy Dockerfile
+  ansible.builtin.copy:
+    src: Dockerfile
+    dest: /opt/app/duckdns/Dockerfile
+
+- name: Copy script
+  ansible.builtin.template:
+    src: entrypoint.sh
+    dest: /opt/app/duckdns/entrypoint.sh
