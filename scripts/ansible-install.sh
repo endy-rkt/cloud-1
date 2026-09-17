@@ -2,14 +2,11 @@
 
 #test on debian like os
 #to run with source
-
+#we can start by creating a venv then use this
 install_ansible(){
     if ! command -v ansible &> /dev/null; then
-        echo "Creating a virtual env for python3"
-        python3 -m venv .venv
-        source .venv/bin/activate
-
         echo "Installing ansible..."
+        # pip install ansible --break-system-packages for vm
         pip install ansible
         ansible --version
     fi

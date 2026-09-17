@@ -25,12 +25,11 @@
     - trigger Nginx build
     - trigger_compose_refresh
 
-- name: create certificate for nginx
-  ansible.builtin.shell: 
-    cmd: "openssl req -newkey rsa:2048 -nodes \
-        -keyout /opt/app/nginx/conf/cert/secret.key -x509 -days 365 \
-        -out /opt/app/nginx/conf/cert/secret.crt \
-        -subj '/C=MG/ST=Madagascar/L=Antananarivo/O=trazanad/OU=trazanad/CN=trazanad.42.fr'" 
+- name: create a self trusted cert with mkcert
+  ansible.builtin.shell:
+    cmd: "mkcert -key-file /opt/app/nginx/conf/cert/secret.key \
+        -cert-file /opt/app/nginx/conf/cert/secret.crt \
+        localhost *.localhost"
     creates: /opt/app/nginx/conf/cert/secret.key
   notify:
     - remove old Nginx image
