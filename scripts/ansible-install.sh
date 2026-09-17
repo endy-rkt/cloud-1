@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#test on debian like os
-#to run with source
-#we can start by creating a venv then use this
 install_ansible(){
     if ! command -v ansible &> /dev/null; then
         echo "Installing ansible..."
@@ -16,11 +13,6 @@ install_ansible_collection(){
     if ansible --version &> /dev/null; then
         ansible-galaxy collection install community.docker
     fi
-}
-
-#download tf for provisionning and use in goinfre
-download_terraform(){
-    wget https://releases.hashicorp.com/terraform/1.16.0/terraform_1.16.0_linux_amd64.zip
 }
 
 install_ansible

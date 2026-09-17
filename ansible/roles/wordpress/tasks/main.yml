@@ -35,8 +35,7 @@
     group: deployer
   no_log: true
   notify:
-    - remove old wordpress image 
-    - trigger wordpress build
+    - remove_db_volume
     - trigger_compose_refresh
 
 - name: write secret file from Vault variable(wp_user_pass)
@@ -48,8 +47,7 @@
     group: deployer
   no_log: true
   notify:
-    - remove old wordpress image 
-    - trigger wordpress build
+    - remove_db_volume
     - trigger_compose_refresh
 
 - name: deploy wordpress configuration
@@ -60,6 +58,5 @@
     group: deployer
     mode: "0755"
   notify:
-    - remove old wordpress image 
-    - trigger wordpress build
+    - remove_db_volume
     - trigger_compose_refresh

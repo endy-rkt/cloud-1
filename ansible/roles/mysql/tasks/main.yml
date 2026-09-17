@@ -24,6 +24,9 @@
     mode: "0400"
     owner: deployer
     group: deployer
+  notify:
+    - remove_db_volume
+    - trigger_compose_refresh
   no_log: true
 
 - name: write secret file from Vault variable(db_user_pass)
@@ -33,6 +36,9 @@
     mode: "0400"
     owner: deployer
     group: deployer
+  notify:
+    - remove_db_volume
+    - trigger_compose_refresh
   no_log: true
 
 - name: pull mysql image
