@@ -25,12 +25,21 @@
     - trigger Nginx build
     - trigger_compose_refresh
 
-- name: create a self trusted cert with mkcert
+- name: Install mkcert CA to a custom directory
+  ansible.builtin.shell: 
+    cmd:  mkcert -install
+    creates: "/opt/app/mkcert-ca/rootCA.pem"
+  environment:
+    CAROOT: "/opt/app/mkcert-ca"
+
+- name: Create a self-trusted cert with mkcert
   ansible.builtin.shell:
     cmd: "mkcert -key-file /opt/app/nginx/conf/cert/secret.key \
         -cert-file /opt/app/nginx/conf/cert/secret.crt \
-        localhost *.localhost"
+        localhost {{ ansible_host }} mobutu1337.duckdns.org"
     creates: /opt/app/nginx/conf/cert/secret.key
+  environment:
+    CAROOT: "/opt/app/mkcert-ca"
   notify:
     - remove old Nginx image
     - trigger Nginx build
