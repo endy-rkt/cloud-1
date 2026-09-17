@@ -7,6 +7,12 @@
     state: present
     update_cache: yes
 
+- name: install mkcert
+  ansible.builtin.package:
+    name: mkcert
+    state: present
+    update_cache: yes
+
 - name: install ACL package for Ansible unprivileged user switching
   ansible.builtin.package:
     name: acl

@@ -2,7 +2,7 @@
 
 #test on debian like os
 #to run with source
-
+#we can start by creating a venv then use this
 install_ansible(){
     if ! command -v ansible &> /dev/null; then
         echo "Installing ansible..."
