@@ -13,6 +13,6 @@
     #- mariadb
     #- wordpress
     - duckdns
-    #- phpmyadmin
-    #- nginx
+    - phpmyadmin
+    - nginx
     - services
