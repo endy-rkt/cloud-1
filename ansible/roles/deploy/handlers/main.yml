@@ -1,6 +1,14 @@
 #SPDX-License-Identifier: MIT-0
 ---
-# handlers file for deploy trigger_compose_refresh
+# handlers file for deploy trigger_compose_restart
+- name: stop docker compose
+  become: yes
+  become_user: deployer
+  community.docker.docker_compose_v2:
+    project_src: /opt/app/
+    state: absent
+  listen: trigger_compose_stop
+
 - name: launch docker compose
   become: yes
   become_user: deployer
@@ -8,4 +16,4 @@
     project_src: /opt/app/
     build: always
     state: present
-  listen: trigger_compose_refresh
+  listen: trigger_compose_restart

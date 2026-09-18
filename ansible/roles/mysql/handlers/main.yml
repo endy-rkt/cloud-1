@@ -1,6 +1,17 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # handlers file for mysql
-- name: remove db volume
-  ansible.builtin.command: rm -rf /opt/app/mysql/data
-  listen: remove_db_volume
+- name: remove db volume folder
+  ansible.builtin.file:
+    path: /opt/app/mysql/data
+    state: absent
+  listen: remove_db_volume_folder
+
+- name: recreate mysql volume folder
+  ansible.builtin.file:
+    path: /opt/app/mysql/data
+    owner: deployer
+    group: deployer
+    state: directory
+    mode: "0755"
+  listen: recreate_db_volume_folder

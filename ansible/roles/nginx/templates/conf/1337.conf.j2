@@ -1,7 +1,7 @@
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    server_name {{ ansible_host }} localhost;
+    server_name {{ ansible_host }} localhost mobutu1337.duckdns.org;
 
     root /var/www/html;
     index index.php index.html;
@@ -26,7 +26,7 @@ server {
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    server_name {{ ansible_host }} localhost;
+    server_name {{ ansible_host }} localhost mobutu1337.duckdns.org;
 
     root /var/www/html;
     index index.php;
@@ -41,7 +41,7 @@ server {
     }
 
     # phpMyAdmin PHP handling (FPM 9000)
-    location ~ ^/gg(?<pma_script>.*\.php)$ {
+    location ~ ^/pma(?<pma_script>.*\.php)$ {
         fastcgi_pass phpmyadmin:9000;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME /var/www/html$pma_script;
@@ -49,7 +49,7 @@ server {
     }
 
     # phpMyAdmin static files — no ^~
-    location /gg {
+    location /pma {
         alias /var/www/admin/;
         index index.php index.html;
         try_files $uri $uri/ =404;

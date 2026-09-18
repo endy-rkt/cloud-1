@@ -35,8 +35,12 @@
     group: deployer
   no_log: true
   notify:
-    - remove_db_volume
-    - trigger_compose_refresh
+    - trigger_compose_stop
+    - remove_db_volume_folder
+    - recreate_db_volume_folder
+    - remove_wp_volume_folder
+    - recreate_wp_volume_folder
+    - trigger_compose_restart
 
 - name: write secret file from Vault variable(wp_user_pass)
   ansible.builtin.copy:
@@ -47,8 +51,12 @@
     group: deployer
   no_log: true
   notify:
-    - remove_db_volume
-    - trigger_compose_refresh
+    - trigger_compose_stop
+    - remove_db_volume_folder
+    - recreate_db_volume_folder
+    - remove_wp_volume_folder
+    - recreate_wp_volume_folder
+    - trigger_compose_restart
 
 - name: deploy wordpress configuration
   ansible.builtin.template:
@@ -58,5 +66,9 @@
     group: deployer
     mode: "0755"
   notify:
-    - remove_db_volume
-    - trigger_compose_refresh
+    - trigger_compose_stop
+    - remove_db_volume_folder
+    - recreate_db_volume_folder
+    - remove_wp_volume_folder
+    - recreate_wp_volume_folder
+    - trigger_compose_restart

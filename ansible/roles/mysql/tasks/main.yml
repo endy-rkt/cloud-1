@@ -25,8 +25,12 @@
     owner: deployer
     group: deployer
   notify:
-    - remove_db_volume
-    - trigger_compose_refresh
+    - trigger_compose_stop
+    - remove_db_volume_folder
+    - recreate_db_volume_folder
+    - remove_wp_volume_folder
+    - recreate_wp_volume_folder
+    - trigger_compose_restart
   no_log: true
 
 - name: write secret file from Vault variable(db_user_pass)
@@ -37,8 +41,12 @@
     owner: deployer
     group: deployer
   notify:
-    - remove_db_volume
-    - trigger_compose_refresh
+    - trigger_compose_stop
+    - remove_db_volume_folder
+    - recreate_db_volume_folder
+    - remove_wp_volume_folder
+    - recreate_wp_volume_folder
+    - trigger_compose_restart
   no_log: true
 
 - name: pull mysql image

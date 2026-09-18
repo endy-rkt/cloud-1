@@ -21,18 +21,19 @@
     group: deployer
     mode: "0755"
   notify:
+    - trigger_compose_stop
     - remove old Nginx image
     - trigger Nginx build
-    - trigger_compose_refresh
+    - trigger_compose_restart
 
-- name: Install mkcert CA to a custom directory
+- name: install mkcert CA to a custom directory
   ansible.builtin.shell: 
     cmd:  mkcert -install
     creates: "/opt/app/mkcert-ca/rootCA.pem"
   environment:
     CAROOT: "/opt/app/mkcert-ca"
 
-- name: Create a self-trusted cert with mkcert
+- name: create a self-trusted cert with mkcert
   ansible.builtin.shell:
     cmd: "mkcert -key-file /opt/app/nginx/conf/cert/secret.key \
         -cert-file /opt/app/nginx/conf/cert/secret.crt \
@@ -41,9 +42,10 @@
   environment:
     CAROOT: "/opt/app/mkcert-ca"
   notify:
+    - trigger_compose_stop
     - remove old Nginx image
     - trigger Nginx build
-    - trigger_compose_refresh
+    - trigger_compose_restart
 
 - name: update cert permissions and ownership
   ansible.builtin.file:
@@ -63,6 +65,7 @@
     group: deployer
     mode: "0755"
   notify:
+    - trigger_compose_stop
     - remove old Nginx image
     - trigger Nginx build
-    - trigger_compose_refresh
+    - trigger_compose_restart
